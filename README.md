@@ -40,7 +40,7 @@ The student should develop at least two queries for each SQL and NoSQL database.
 
 #### Code Submission
 
-For each coursework submission code must be submitted in bitbucket. The repository for submission is (iftcoursework2023)[https://bitbucket.org/uceslc0/iftcoursework2023/src/master/].
+For each coursework submission code must be submitted in bitbucket. The repository for submission is [iftcoursework2023](https://bitbucket.org/uceslc0/iftcoursework2023/src/master/).
 
 In order to submit the coursework, the student needs to follow the following steps:
 
