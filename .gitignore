@@ -6,6 +6,7 @@
 # Node artifact files
 node_modules/
 dist/
+.devcontainer/
 
 # Compiled Java class files
 *.class
@@ -40,6 +41,20 @@ Thumbs.db
 *.exe
 *.war
 
+# R
+*.Rhistory
+*.RData
+*.rda
+*.Rproj
+*.Rproj.user
+
+# Credentials
+*.cr
+
+# python cache
+__pycache__
+.pytest_cache
+
 # Large media files
 *.mp4
 *.tiff
@@ -48,3 +63,9 @@ Thumbs.db
 *.mov
 *.wmv
 
+# vs code settings
+.vscode
+
+# volumes folders docker
+
+postgres-data/

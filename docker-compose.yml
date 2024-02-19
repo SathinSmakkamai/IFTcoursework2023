@@ -1,0 +1,72 @@
+version: '3.5'
+
+services:
+    mongo_db:
+      container_name: mongo_db_cw
+      image: mongo:latest
+      ports:
+        - 27019:27017
+    mongo_seed:
+      container_name: mongo_seed_cw
+      depends_on:
+        - mongo_db
+      build: ./000.Database/NoSQL/.
+    mongo_express:
+      container_name: mongo_express_cw
+      image: mongo-express:latest
+      depends_on:
+        - mongo_db
+      environment:
+        - ME_CONFIG_BASICAUTH_USERNAME=mongodb_express
+        - ME_CONFIG_BASICAUTH_PASSWORD=mongodb_express
+        - ME_CONFIG_MONGODB_SERVER=mongo_db
+        - ME_CONFIG_MONGODB_PORT=27017
+      ports:
+        - '8090:8081'
+    postgres_db:
+        container_name: postgres_db_cw
+        image: postgres:10.5        
+        environment: 
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - PGUSER=postgres
+        logging:
+          options:
+            max-size: 10m
+            max-file: "3"
+        ports:
+          - '5439:5432'
+        volumes:
+          - ./postgres-data:/var/lib/postgresql/data
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready"]
+          interval: 10s
+          timeout: 5s
+          retries: 5          
+    postgres_seed:
+      container_name: postgres_seed_cw
+      restart: on-failure
+      environment:
+        POSTGRES_DATABASE: postgres_feeder
+        POSTGRES_HOST: postgres_feeder
+        POSTGRES_PORT: 5439
+        POSTGRES_USER: postgres_feeder
+        POSTGRES_PASSWORD: postgres_feeder
+      depends_on:
+        postgres_db:
+          condition: service_healthy
+      build: 
+        dockerfile: ./000.Database/SQL/Dockerfile
+    pgadmin:
+      container_name: pg_admin_cw
+      image: dpage/pgadmin4
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: root
+      ports:
+        - "5051:80"
+
+networks:
+  proxynet:
+    name: database_network
