@@ -6,6 +6,7 @@
     - [Requirements](#requirements)
       - [Code Submission](#code-submission)
       - [Report](#report)
+      - [Marking Criteria](#marking-criteria)
 
 
 ## Coursework One
@@ -81,7 +82,7 @@ Once this is completed, in order to submit the code to Bitbucket:
 
 #### Report
 
-Along side to code developments, the student must write a report (1000 Words max) that will be submitted in Turnitin according to the deadlines specified at the top of this page. 
+Along side to code developments, the student must write a report (10,000 Words max) that will be submitted in Turnitin according to the deadlines specified at the top of this page. 
 
 The report should be structured as following:
 
@@ -95,3 +96,14 @@ The report should be structured as following:
 4. Conclusion: conclude the work and summary of key findings.
 
 In the report headers please make sure to include your *student number* only as needs to link to your dev folder in the bitbucket repository.
+
+
+#### Marking Criteria
+
+The marking criteria of this coursework is as follows:
+
+1. Understanding of Git workflow - create branch, push code to Bitbucket, create a pull request and successfully merge code commit into the master branch (20% of Total).
+2. Understanding of Docker infrastructure (5% of total).
+3. Understanding of SQL language by writing two queries (35% of Total);
+4. Understanding of NoSQL language (MongoDB) by writing two queries (35% of Total).
+5. Write final report based on the given instructions and structure (5% of Total).
