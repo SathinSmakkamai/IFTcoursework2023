@@ -6,7 +6,6 @@ Content: SQL Queries for CourseWork One
 
 SET search_path = cash_equity, "$user", public;
 
-
 -- Query 1 --------------------------------------------------------------------------------
 
 SELECT gics_sector,
@@ -19,7 +18,17 @@ INNER JOIN equity_static ON equity_prices.symbol_id = equity_static.symbol
 WHERE country = 'US' AND cob_date >= '2021-01-01' AND cob_date < '2022-01-01'
 GROUP BY gics_sector;
 
--- Query 2.1 ------------------------------------------------------------------------------
+-- Query 2 --------------------------------------------------------------------------------
+
+SELECT gics_sector,
+    COUNT(gics_sector) as sector_count,
+    SUM(net_amount) as sector_net_amount,
+    ROUND((SUM(net_amount) / (SELECT SUM(net_amount) FROM portfolio_positions)*100),2) as sector_weight
+FROM portfolio_positions
+LEFT JOIN equity_static ON portfolio_positions.symbol = equity_static.symbol
+GROUP BY gics_sector;
+
+-- Query 3.1 ------------------------------------------------------------------------------
 
 SELECT *,
     CASE WHEN portfolio_positions.ccy = 'USD' THEN portfolio_positions.net_amount
@@ -31,20 +40,21 @@ SELECT *,
          AND portfolio_positions.ccy = exchange_rates.from_currency
     WHERE exchange_rates.to_currency = 'USD';
 
--- Query 2.2 ------------------------------------------------------------------------------
+-- Query 3.2 ------------------------------------------------------------------------------
 
-SELECT trader, ROUND(SUM(net_amount_USD), 2) AS portfolio_value_USD
+SELECT trader_name, ROUND(SUM(net_amount_USD), 2) AS portfolio_value_USD
 FROM (
     SELECT *,
 	    CASE WHEN portfolio_positions.ccy = 'USD' THEN portfolio_positions.net_amount
              ELSE portfolio_positions.net_amount * exchange_rates.exchange_rate
              END AS net_amount_USD
-        FROM portfolio_positions
-        LEFT JOIN exchange_rates
-             ON portfolio_positions.cob_date = exchange_rates.cob_date
-             AND portfolio_positions.ccy = exchange_rates.from_currency
-        WHERE exchange_rates.to_currency = 'USD'
-    )
+    FROM portfolio_positions
+    LEFT JOIN exchange_rates
+        ON portfolio_positions.cob_date = exchange_rates.cob_date
+        AND portfolio_positions.ccy = exchange_rates.from_currency
+    WHERE exchange_rates.to_currency = 'USD'
+     )
 AS subquery
-GROUP BY trader
+LEFT JOIN trader_static ON subquery.trader = trader_static.trader_id
+GROUP BY trader_static.trader_name
 ORDER BY portfolio_value_USD DESC;
