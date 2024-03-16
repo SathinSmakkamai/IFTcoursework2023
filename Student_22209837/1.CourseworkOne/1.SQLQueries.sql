@@ -85,7 +85,7 @@ FROM (
         ON portfolio_positions.cob_date = exchange_rates.cob_date
         AND portfolio_positions.ccy = exchange_rates.from_currency
     WHERE exchange_rates.to_currency = 'USD'
-     )
+    )
 AS subquery
 -- Join 2 table to get trader name for each trader_id
 LEFT JOIN trader_static ON subquery.trader = trader_static.trader_id
