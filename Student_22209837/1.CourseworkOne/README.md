@@ -18,6 +18,8 @@ In this case of big data in quantitative finance coursework, we will delve into 
 
 ## SQL Query explain
 
+In this coursework, we use PGadmin and PostgreSQL as a SQL database. Within our database "cash_equity", we have six different tables. The three following queries from the SQL database represent the possible usage and implications of big data that can improve real-world decision-making.
+
 #### Query 1: Get the percentage change of equity in different sectors within the USA
 
 ```
@@ -68,29 +70,31 @@ ORDER BY portfolio_value_USD DESC;
 
 ## NoSQL Query Explain
 
+For NoSQL databases, in this case, we use MongoDB, a non-relational document database. Its document-oriented structure allows for storing data in JSON-like documents, making it easy to work with dynamic and evolving data models. In MongoDB, data is structured as key-value pairs within documents, which are organized into collections. This can be compared to the SQL structure where collections correspond to tables, documents to rows, and keys to columns. Consequently, data is stored separately, and the database is less suitable for establishing relationships between data but rather primarily provides search queries with basic aggregate functions.
+
 #### Query 1: Find the top 10 large-market-cap equities with the highest dividend yield
 
 ```
-db.Static.find({
-    "MarketCap": { $gt: 10000 }})
-    .sort({ "DividendYield": -1 })
+db.CourseworkOne.find({
+    "MarketData.MarketCap": { $gt: 10000 }})
+    .sort({ "FinancialRatios.DividendYield": -1 })
     .limit(10)
 ```
 #### Query 2: Get the total market capitalization for each subsector in the Industrial sector
 
 ```
-db.Static.aggregate([
-    { $match: { GICSSector: 'Industrials' } },
-    { $group: { _id: "$GICSSubIndustry",
-            totalMarketCap: { $sum: "$MarketCap" } } },
-    { $sort: { totalMarketCap: -1 } } ])
+db.CourseworkOne.aggregate([
+    { $match: { "StaticData.GICSSector": 'Industrials' } },
+    { $group: { _id: "$StaticData.GICSSubIndustry",
+            totalMarketCap: { $sum: "$MarketData.MarketCap" } } },
+    { $sort: { totalMarketCap: -1 } }])
 ```
 
 #### Query 3: Get the number of equities in each sector
 
 ```
-db.Static.aggregate([
-    { $group: { _id: "$GICSSector",
+db.CourseworkOne.aggregate([
+    { $group: { _id: "$ StaticData.GICSSector",
             count: { $sum: 1 } } },
     { $sort: { count: -1 } } ])
 ```
