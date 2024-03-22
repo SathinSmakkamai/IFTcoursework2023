@@ -15,6 +15,7 @@ RUN mkdir /home/${USER_ID}/
 
 # load Mongodb
 COPY CourseworkOne.json /home/${USER_ID}/
-COPY CourseworkOne.json /home/${USER_ID}/
+COPY CourseworkTwo.json  /home/${USER_ID}/
 
-CMD mongoimport --uri mongodb://mongo_db_cw:27017/Equity --collection CourseworkOne --drop --file /home/${USER_ID}/CourseworkOne.json --jsonArray
+CMD mongoimport --uri mongodb://mongo_db_cw:27017/Equity --collection CourseworkOne --drop --file /home/${USER_ID}/CourseworkOne.json --jsonArray \
+&& mongoimport --uri mongodb://mongo_db_cw:27017/ExchangeTraded --collection EquityTrades --drop --file /home/${USER_ID}/CourseworkTwo.json --jsonArray
