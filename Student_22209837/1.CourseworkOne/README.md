@@ -21,7 +21,6 @@ In this case of big data in quantitative finance coursework, we will delve into 
 In this coursework, we use PGadmin and PostgreSQL as a SQL database. Within our database "cash_equity", we have six different tables. The three following queries from the SQL database represent the possible usage and implications of big data that can improve real-world decision-making.
 
 #### Query 1: Get the percentage change of equity in different sectors within the USA
-
 ```
 SELECT gics_sector,
     ROUND(MAX(((close_price - open_price) / open_price) * 100), 2) AS max_percentage_gain,
@@ -35,7 +34,6 @@ GROUP BY gics_sector;
 ```
 
 #### Query 2: Get the portfolio weight by equity in each sector
-
 ```
 SELECT gics_sector,
     COUNT(gics_sector) as sector_count,
@@ -45,8 +43,8 @@ FROM portfolio_positions
 LEFT JOIN equity_static ON portfolio_positions.symbol = equity_static.symbol
 GROUP BY gics_sector;
 ```
-#### Query 3: Get the portfolio values in USD for each trader
 
+#### Query 3: Get the portfolio values in USD for each trader
 ```
 SELECT trader_name, ROUND(SUM(net_amount_USD), 2) AS portfolio_value_USD
 FROM (
@@ -64,24 +62,40 @@ AS subquery
 LEFT JOIN trader_static ON subquery.trader = trader_static.trader_id
 GROUP BY trader_static.trader_name
 ORDER BY portfolio_value_USD DESC;
-
 ```
-
 
 ## NoSQL Query Explain
 
 For NoSQL databases, in this case, we use MongoDB, a non-relational document database. Its document-oriented structure allows for storing data in JSON-like documents, making it easy to work with dynamic and evolving data models. In MongoDB, data is structured as key-value pairs within documents, which are organized into collections. This can be compared to the SQL structure where collections correspond to tables, documents to rows, and keys to columns. Consequently, data is stored separately, and the database is less suitable for establishing relationships between data but rather primarily provides search queries with basic aggregate functions.
 
-#### Query 1: Find the top 10 large-market-cap equities with the highest dividend yield
+#### Query 1: Find Equity in the Energy Sector with Some Constraints
+```
+db.CourseworkOne.find({
+    "StaticData.GICSSector": "Energy",
+    "MarketData.MarketCap": { $gt: 10000 },
+    "MarketData.Beta": { $gte: 0.7, $lte: 1.3 },
+    "FinancialRatios.DividendYield": { $gt: 5.0 } })
+```
 
+#### Query 2: Find the top 10 large-market-cap Equities with the highest dividend yield
 ```
 db.CourseworkOne.find({
     "MarketData.MarketCap": { $gt: 10000 }})
     .sort({ "FinancialRatios.DividendYield": -1 })
     .limit(10)
 ```
-#### Query 2: Get the total market capitalization for each subsector in the Industrial sector
 
+#### Query 3: Find the top 5 equities from either the energy sector or the consumer discretionary
+```
+db.CourseworkOne.find({
+    $and: [
+        { $or: [{ "StaticData.GICSSector": "Energy" }, { "StaticData.GICSSector": "Consumer Discretionary" } ] },
+        { "MarketData.Beta": { $gt: 0.7 } } ]})
+    .sort({ "MarketData.Beta": -1})
+    .limit(5)
+```
+
+#### Query 4: Get the total market capitalization for each subsector in the Industrial sector
 ```
 db.CourseworkOne.aggregate([
     { $match: { "StaticData.GICSSector": 'Industrials' } },
@@ -90,8 +104,7 @@ db.CourseworkOne.aggregate([
     { $sort: { totalMarketCap: -1 } }])
 ```
 
-#### Query 3: Get the number of equities in each sector
-
+#### Query 5: Get the number of equities in each sector
 ```
 db.CourseworkOne.aggregate([
     { $group: { _id: "$ StaticData.GICSSector",
