@@ -1,0 +1,1 @@
+EquityTrades_20231123110001.parquet
