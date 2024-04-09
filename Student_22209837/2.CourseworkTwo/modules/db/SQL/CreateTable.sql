@@ -1,6 +1,19 @@
 -- CreateTable.sql
 
 -- Create trades_suspects table
+CREATE TABLE IF NOT EXISTS TradingRecord (
+    trade_id TEXT PRIMARY KEY,
+    datetime TEXT,
+    trader TEXT,
+    isin TEXT,
+    quantity INTEGER,
+    notional REAL,
+    trade_type TEXT,
+    ccy TEXT,
+    counterparty TEXT
+);
+
+-- Create trades_suspects table
 CREATE TABLE IF NOT EXISTS trades_suspects (
     trade_id TEXT PRIMARY KEY,
     datetime TEXT,

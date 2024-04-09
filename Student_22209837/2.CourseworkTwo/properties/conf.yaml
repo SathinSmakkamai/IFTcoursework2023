@@ -3,6 +3,8 @@ dev:
     Directories:
       SQLDataBase : '../../../../DataBases/DBs/DMOBondPrices/BondPrice.db'
     Database:
+      SQLite:
+        file: 'trades_suspects.db'
       Mongo:
         Collection: 'TradingRecord'
         Db: 'Trades'
