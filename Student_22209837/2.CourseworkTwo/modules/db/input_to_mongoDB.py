@@ -1,21 +1,12 @@
-"""
-
-UCL -- Institute of Finance & Technology
-Author  : Luca Cocconcelli
-Lecture : 2024-02-22
-Topic   : Main.py
-Project : MongoDB Trades uploader
-Desc    : Class to load data into MongoDB
-
-
-"""
 from pymongo import MongoClient
 import datetime
 
 from modules.input.read_file import ReadInputFiles
+from modules.utils.info_logger import print_info_log
+from modules.utils.args_parser import arg_parse_cmd
+from modules.utils.config_parser import Config
 
-
-class LoadMongo(ReadInputFiles):
+class input_mongoDB(ReadInputFiles):
 
     def __init__(self, mongo_config, file_config, log_file):
         self.mongo_config = mongo_config
@@ -53,3 +44,15 @@ class LoadMongo(ReadInputFiles):
         if response.acknowledged:
             self._write_log_file(self.file_name)
         return response.acknowledged
+
+    def insert_data_to_mongoDB(conf):
+
+        print_info_log('Command line argument parsed & main config loaded', 'progress')
+        mongo_loader = input_mongoDB(conf['config']['Database']['Mongo'],
+                                     conf['params']['OutputFile'],
+                                 './static/file_load_logger.txt')
+        mongo_loader.get_latest_input_file()
+        mongo_loader.load_mongo_data()
+        print_info_log('Script completed', 'progress')
+
+

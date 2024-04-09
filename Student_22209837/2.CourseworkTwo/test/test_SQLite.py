@@ -1,4 +1,3 @@
-
 import sqlite3
 
 def print_db_info(database_file):
