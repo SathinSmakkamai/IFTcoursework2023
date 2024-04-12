@@ -1,4 +1,6 @@
 
+
+
 class InvalidTradeDetectionModel:
     @staticmethod
     def is_trade_valid(trade_data):
@@ -6,3 +8,9 @@ class InvalidTradeDetectionModel:
         if trade_data['Notional'] < 1000000:
             return True
         return False
+
+
+
+
+
+

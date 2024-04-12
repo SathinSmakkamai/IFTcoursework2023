@@ -1,29 +1,14 @@
+
 dev:
-  config:
-    Directories:
-      SQLDataBase : '../../../../DataBases/DBs/DMOBondPrices/BondPrice.db'
-    Database:
-      SQLite:
-        file: 'trades_suspects.db'
-      Mongo:
-        Collection: 'TradingRecord'
-        Db: 'Trades'
-        url: 'mongodb://localhost:27019'
-      Postgres:
-        Host: localhost
-        Database: fift
-        Username: postgres
-        Password: postgres
-        Port: 5439
-  params:
-    TradesParameters:
-      tradersIds : ['JBX1566', 'DGR1983', 'DHB1075', 'SML1458','DMZ1796','MRH5231']
-      counterParty: ['GSL','JPM','CIT','SAN','BAR','MLI']
-      tradeQuantity: [-500,-1000,-2500,-5000,-7500,-10000,-20000,500,1000,2500,5000,7500,10000,15000,30000]
-      SimulationNumber: 100
-    OutputFile:
-      # modified to suite coursework environment
-      DataLake : '../../000.Database/DataLake/FOTrades'
-      FileName: 'BondTrades_'
-      ColumnNames: ['DateTime','TradeId','Trader','ISIN','Quantity','Notional','TradeType','Ccy','Counterparty']
-      AvroSchema: './static/RNDTRADE.avsc'
+
+  SQLite:
+    sql_file: "./modules/db/SQL/CreateTable.sql"
+    sqlite_db: 'trades_suspects.db'
+
+  parquet_file:
+    parquet_file: '../../000.Database/DataLake/FOTrades/EquityTrades_20231123110001.parquet'
+
+  mongoDB:
+    mongo_uri: 'mongodb://localhost:27019'
+    db_name: 'your_database'
+    collection_name: 'your_collection'

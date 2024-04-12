@@ -17,7 +17,7 @@ def arg_parse_cmd():
     parser.add_argument(
         '--env_type',
         required=True,
-        choices=['dev', 'docker'],
+        choices=['dev', 'dev_update'],
         type=str,
         help='Provide environment type: dev or docker where dev is your local machine.'
     )
