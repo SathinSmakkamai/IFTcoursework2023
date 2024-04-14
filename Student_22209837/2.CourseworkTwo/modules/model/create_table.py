@@ -6,7 +6,7 @@ class create_table:
     def create_SQL_table_new(conf):
 
         # Read SQL script from file
-        with open(conf['SQLite']['sql_file'], 'r') as file:
+        with open(conf['SQLite']['create_table_path'], 'r') as file:
             sql_script = file.read()
 
         # connect to SQLite database

@@ -1,9 +1,10 @@
+"""
 
-from pymongo import MongoClient
-import matplotlib.pyplot as plt
-import pandas as pd
-from pymongo import MongoClient
-import sqlite3
+UCL -- Institute of Finance & Technology
+Author  : Sathin Smakkamai
+Topic   : connect_to_db.py
+
+"""
 
 # import utils library
 from modules.utils.info_logger import print_info_log
@@ -18,10 +19,9 @@ from modules.db.connect_to_db import connect_to_db
 
 # import trade_detection_model library
 from modules.model.create_table import create_table
-from modules.model.trade_detection_model import InvalidTradeDetectionModel
+from modules.model.trade_detection_model import invalid_trade_detection
 
 # import output library (load result to database)
-from modules.output.output_to_db import output_to_mongoDB
 from modules.output.output_to_db import output_to_SQLite
 
 
@@ -34,22 +34,22 @@ if __name__ == '__main__':
     parsed_args = args.parse_args()
     conf = Config(parsed_args.env_type)
 
-    # load parquet data to mongoDB
+    # input parquet data to mongoDB
     input_mongoDB.load_parquet_to_mongodb(conf)
+
+    # connect to database
+    client, db, collection, data = connect_to_db.connect_to_mongoDB(conf)
+    conn, cur = connect_to_db.connect_to_SQLite(conf)
 
     # create SQLite table using .sql file
     create_table.create_SQL_table_new(conf)
 
-    # load all trading record to SQL table
-    output_to_SQLite.load_mongodb_to_sqlite_new(conf)
+    # insert trading record to SQL table
+    output_to_SQLite.load_SQLite(conf)
 
-    # Get suspect trades to database
-    output_to_SQLite.get_suspect_trades_new(conf)
-    # output_to_mongoDB.get_suspect_trades_new(conf)
+    # get portfolio position from trading records
+    output_to_SQLite.get_portfolio_position(conf)
 
-    # Get portfolio position and input to SQLite
-    output_to_SQLite.get_portfolio_position_from_trades_suspects(conf)
-
-
-    print_info_log('Completed', 'progress')
+    # get suspect trades to SQLite database
+    output_to_SQLite.get_suspect_trades(conf)
 

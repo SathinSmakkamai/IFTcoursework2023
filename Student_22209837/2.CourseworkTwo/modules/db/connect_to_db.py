@@ -1,9 +1,13 @@
+"""
+
+UCL -- Institute of Finance & Technology
+Author  : Sathin Smakkamai
+Topic   : connect_to_db.py
+
+"""
+
 import sqlite3
-from modules.utils.info_logger import print_info_log
-from modules.model.trade_detection_model import InvalidTradeDetectionModel
-
 from pymongo import MongoClient
-
 
 class connect_to_db:
 
@@ -14,7 +18,7 @@ class connect_to_db:
         collection = db[conf['mongoDB']['collection_name']]
         data = list(collection.find())
 
-        return client, data
+        return client, db, collection, data
 
     def connect_to_SQLite(conf):
 

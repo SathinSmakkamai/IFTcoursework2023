@@ -1,14 +1,10 @@
-
 dev:
-
   SQLite:
-    sql_file: "./modules/db/SQL/CreateTable.sql"
-    sqlite_db: 'trades_suspects.db'
-
-  parquet_file:
-    parquet_file: '../../000.Database/DataLake/FOTrades/EquityTrades_20231123110001.parquet'
-
+    create_table_path: "./modules/db/SQL/CreateTable.sql"
+    sqlite_db: './modules/db/trades_suspects.db'
+  parquet:
+    parquet_file_path: '../../000.Database/DataLake/FOTrades/EquityTrades_20231123110001.parquet'
   mongoDB:
     mongo_uri: 'mongodb://localhost:27019'
-    db_name: 'your_database'
+    db_name: 'trades'
     collection_name: 'your_collection'

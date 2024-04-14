@@ -1,6 +1,6 @@
 import sqlite3
 
-def print_db_info(database_file):
+def print_db_row(database_file):
     # Connect to the database
     conn = sqlite3.connect(database_file)
     cursor = conn.cursor()
@@ -21,4 +21,5 @@ def print_db_info(database_file):
 
 # Example usage
 database_file = '../trades_suspects.db'
-print_db_info(database_file)
+
+print_db_row(database_file)
