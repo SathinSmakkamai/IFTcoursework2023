@@ -27,8 +27,6 @@ from modules.output.output_to_db import output_to_SQLite
 
 if __name__ == '__main__':
 
-    print_info_log('Main.py Script started', 'progress')
-
     # set all variable using pre-set configuration from the conf.yaml file
     args = arg_parse_cmd()
     parsed_args = args.parse_args()
